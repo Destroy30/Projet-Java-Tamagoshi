@@ -17,41 +17,10 @@ import tamagoshi.tamagoshis.Tamagoshi;
 
 public class TamaJPanel extends JPanel {
 	
-	private Tamagoshi tamagoshi;
-	private JPanel tamaImagePanel;
 	private BufferedImage tamaImage;
-	private JTextPane talkZone;
-	private JButton feedButton,playButton;
 	
-	public TamaJPanel(Tamagoshi tamagoshi) {
-		this.tamagoshi = tamagoshi;
-		
-		this.setTamaImage("tamabase");
-		
-		this.setLayout(new BorderLayout());
-		
-		JPanel panelAction = new JPanel(new GridLayout(2,1));
-		
-		this.talkZone = new JTextPane();
-		talkZone.setPreferredSize(new Dimension(300,50));
-		talkZone.setEditable(false);
-		
-		panelAction.add(talkZone);
-		
-		JPanel panelBoutons = new JPanel(new FlowLayout());
-		
-		this.feedButton = new JButton("Nourrir");
-		feedButton.addActionListener((e->{goFeed();}));
-		
-		this.playButton = new JButton("Jouer");
-		playButton.addActionListener((e->{goPlay();}));
-		
-		panelBoutons.add(feedButton);
-		panelBoutons.add(playButton);
-		
-		panelAction.add(panelBoutons);
-		
-		this.add(BorderLayout.SOUTH, panelAction);
+	public TamaJPanel() {	
+		this.setTamaImage("pikabase");
 	}
 	
 	private void setTamaImage(String ressourceName) {
@@ -68,16 +37,9 @@ public class TamaJPanel extends JPanel {
 		g.drawImage(this.tamaImage, 20, 0, 250,250,this);
 	}
 	
-	public void displayText(String text) {
-		this.talkZone.setText(text);
-	}
-	
-	private void goFeed() {
-		this.tamagoshi.mange();
-	}
-	
-	private void goPlay() {
-		this.tamagoshi.joue();
+	public void changeImage(String ressourceName) {
+		this.setTamaImage(ressourceName);
+		this.repaint();
 	}
 	
 

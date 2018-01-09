@@ -2,6 +2,7 @@ package tamagoshi.tamagoshis;
 
 import java.util.Random;
 
+import tamagoshi.graphic.TamaFrame;
 import tamagoshi.graphic.TamaJPanel;
 
 /**
@@ -52,7 +53,7 @@ public abstract class Tamagoshi {
 	 */
 	private Random alea=new Random();
 	
-	private TamaJPanel tamaPanel;
+	private TamaFrame tamaFrame;
 	
 	
 	/**
@@ -110,18 +111,22 @@ public abstract class Tamagoshi {
 	 */
 	public boolean parle() {
 		if(this.energy>=5 && this.fun>=5) {
-			this.tamaPanel.displayText(this.name+" : Tout va bien !");
+			this.tamaFrame.displayText("Tout va bien !");
+			this.tamaFrame.setHappyImage();
 			return true;
 		}
 		else if(this.energy<5 && this.fun<5) {
-			this.tamaPanel.displayText(this.name+" : Je suis affamé et m'ennui à mourrir...");
+			this.tamaFrame.displayText("Je suis affamé et m'ennui à mourrir...");
+			this.tamaFrame.setAngryImage();
 			return false;
 		}
 		else if(this.fun<5) {
-			this.tamaPanel.displayText(this.name+" : Je m'ennui à mourrir...");
+			this.tamaFrame.displayText("Je m'ennui à mourrir...");
+			this.tamaFrame.setBoringImage();
 			return false;
 		}
-		this.tamaPanel.displayText(this.name+" : Je suis affamé...");
+		this.tamaFrame.displayText("Je suis affamé...");
+		this.tamaFrame.setHungryImage();
 		return false;
 	}
 	
@@ -133,11 +138,11 @@ public abstract class Tamagoshi {
 	 */
 	public boolean mange() {
 		if(this.energy<this.maxEnergy) {
-			this.tamaPanel.displayText(this.name+" : Miam miam!");
+			this.tamaFrame.displayText("Miam miam!");
 			setEnergy(this.energy+this.alea.nextInt(3)+1);
 			return true;
 		}
-		this.tamaPanel.displayText(this.name+": Pas miam!");
+		this.tamaFrame.displayText("Pas miam!");
 		return false;
 	}
 	
@@ -149,11 +154,11 @@ public abstract class Tamagoshi {
 	 */
 	public boolean joue() {
 		if(this.fun<this.maxFun) {
-			this.tamaPanel.displayText(this.name+" : Ouiiiii!");
+			this.tamaFrame.displayText("Ouiiiii!");
 			setFun(this.fun+this.alea.nextInt(3)+1);
 			return true;
 		}
-		this.tamaPanel.displayText(this.name+": Dégage, je suis deja au max de MON FUN!");
+		this.tamaFrame.displayText("Dégage, je suis deja au max de MON FUN!");
 		return false;
 	}
 	
@@ -165,7 +170,8 @@ public abstract class Tamagoshi {
 	protected boolean consommeEnergie() {
 		this.energy--;
 		if(this.energy<=0) {
-			this.tamaPanel.displayText(this.name+" : Je suis KO le ventre vide...");
+			this.tamaFrame.displayText("Je suis KO le ventre vide...");
+			this.tamaFrame.setKoImage();
 			return false;
 		}
 		return true;
@@ -179,7 +185,8 @@ public abstract class Tamagoshi {
 	protected boolean consommeFun() {
 		this.fun--;
 		if(this.fun<=0) {
-			this.tamaPanel.displayText(this.name+" : JE SUIS PAS VENU ICI POUR SOUFFRIR OKAY ? BYE");
+			this.tamaFrame.displayText("JE SUIS PAS VENU ICI POUR SOUFFRIR OKAY ? BYE");
+			this.tamaFrame.setKoImage();
 			return false;
 		}
 		return true;
@@ -242,21 +249,9 @@ public abstract class Tamagoshi {
 	public int getAge() {
 		return this.age;
 	}
-	
-	/**
-	 * Permet d'afficher l'état d'un Tamagoshi (si il est mort ou vivant)
-	 */
-	public void finalState() {
-		if(isDead()) {
-			this.tamaPanel.displayText(this+" qui était un "+this.getClass().getSimpleName()+" est malheureusement mort! :(");
-		}
-		else {
-			this.tamaPanel.displayText(this+" a survecu! :)");
-		}
-	}
 
-	public void setTamaPanel(TamaJPanel tamaPanel) {
-		this.tamaPanel = tamaPanel;
+	public void setTamaFrame(TamaFrame tamaFrame) {
+		this.tamaFrame = tamaFrame;
 	}
 	
 	

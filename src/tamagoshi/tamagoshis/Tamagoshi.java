@@ -1,9 +1,11 @@
 package tamagoshi.tamagoshis;
 
 import java.util.Random;
+import java.util.ResourceBundle;
 
 import tamagoshi.graphic.TamaFrame;
 import tamagoshi.graphic.TamaJPanel;
+import tamagoshi.language.LanguageAccessor;
 
 /**
  * Tamagoshi est une classe abstraite permettant de modéliser le comportement d'un Tamagoshi <br>
@@ -55,11 +57,13 @@ public abstract class Tamagoshi {
 	
 	private TamaFrame tamaFrame;
 	
+	private static ResourceBundle language = LanguageAccessor.getDefaultBundle("Tamagoshi");
+	
 	
 	/**
 	 * Cree un objet Tamagoshi <br>
-	 * L'energie maximum varie entre 7 et 9 <br>
-	 * L'energie entre 3 et 7 <br>
+	 * L'energie maximum varie entre 9 et 11 <br>
+	 * L'energie entre 5 et 9 <br>
 	 * La variable "fun" d'amusement suit les mêmes probabilités
 	 * @param name Nom du Tamagoshi
 	 */
@@ -67,10 +71,10 @@ public abstract class Tamagoshi {
 	public Tamagoshi(String name) {
 		this.name=name;
 		this.age=0;
-		this.maxEnergy=this.alea.nextInt(3)+7;
-		setEnergy(this.alea.nextInt(5)+3);
-		this.maxFun=this.alea.nextInt(3)+7;
-		setFun(this.alea.nextInt(5)+3);
+		this.maxEnergy=this.alea.nextInt(5)+7;
+		setEnergy(this.alea.nextInt(5)+5);
+		this.maxFun=this.alea.nextInt(5)+7;
+		setFun(this.alea.nextInt(5)+5);
 	}
 	
 	/**
@@ -111,21 +115,21 @@ public abstract class Tamagoshi {
 	 */
 	public boolean parle() {
 		if(this.energy>=5 && this.fun>=5) {
-			this.tamaFrame.displayText("Tout va bien !");
+			this.tamaFrame.displayText(language.getString("allRight"));
 			this.tamaFrame.setHappyImage();
 			return true;
 		}
 		else if(this.energy<5 && this.fun<5) {
-			this.tamaFrame.displayText("Je suis affamé et m'ennui à mourrir...");
+			this.tamaFrame.displayText(language.getString("hungryBored"));
 			this.tamaFrame.setAngryImage();
 			return false;
 		}
 		else if(this.fun<5) {
-			this.tamaFrame.displayText("Je m'ennui à mourrir...");
+			this.tamaFrame.displayText(language.getString("bored"));
 			this.tamaFrame.setBoringImage();
 			return false;
 		}
-		this.tamaFrame.displayText("Je suis affamé...");
+		this.tamaFrame.displayText(language.getString("hungry"));
 		this.tamaFrame.setHungryImage();
 		return false;
 	}
@@ -138,11 +142,11 @@ public abstract class Tamagoshi {
 	 */
 	public boolean mange() {
 		if(this.energy<this.maxEnergy) {
-			this.tamaFrame.displayText("Miam miam!");
+			this.tamaFrame.displayText(language.getString("eating"));
 			setEnergy(this.energy+this.alea.nextInt(3)+1);
 			return true;
 		}
-		this.tamaFrame.displayText("Pas miam!");
+		this.tamaFrame.displayText(language.getString("dontWantEat"));
 		return false;
 	}
 	
@@ -154,11 +158,11 @@ public abstract class Tamagoshi {
 	 */
 	public boolean joue() {
 		if(this.fun<this.maxFun) {
-			this.tamaFrame.displayText("Ouiiiii!");
+			this.tamaFrame.displayText(language.getString("yeah"));
 			setFun(this.fun+this.alea.nextInt(3)+1);
 			return true;
 		}
-		this.tamaFrame.displayText("Dégage, je suis deja au max de MON FUN!");
+		this.tamaFrame.displayText(language.getString("dontWantPlay"));
 		return false;
 	}
 	
@@ -170,7 +174,7 @@ public abstract class Tamagoshi {
 	protected boolean consommeEnergie() {
 		this.energy--;
 		if(this.energy<=0) {
-			this.tamaFrame.displayText("Je suis KO le ventre vide...");
+			this.tamaFrame.displayText(language.getString("koHungry"));
 			this.tamaFrame.setKoImage();
 			return false;
 		}
@@ -185,7 +189,7 @@ public abstract class Tamagoshi {
 	protected boolean consommeFun() {
 		this.fun--;
 		if(this.fun<=0) {
-			this.tamaFrame.displayText("JE SUIS PAS VENU ICI POUR SOUFFRIR OKAY ? BYE");
+			this.tamaFrame.displayText(language.getString("koBored"));
 			this.tamaFrame.setKoImage();
 			return false;
 		}

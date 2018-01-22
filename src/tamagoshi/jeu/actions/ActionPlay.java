@@ -10,7 +10,7 @@ import javax.swing.Action;
 import javax.swing.JFrame;
 import javax.swing.KeyStroke;
 
-import com.sun.glass.events.KeyEvent;
+import java.awt.event.KeyEvent;
 
 import tamagoshi.jeu.TamaGameGraphic;
 import tamagoshi.jeu.TamaHomeGraphic;

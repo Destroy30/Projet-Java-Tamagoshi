@@ -2,13 +2,12 @@ package tamagoshi.jeu.actions;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.util.ResourceBundle;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.KeyStroke;
-
-import com.sun.glass.events.KeyEvent;
 
 import tamagoshi.language.LanguageAccessor;
 import tamagoshi.language.LanguageObserver;

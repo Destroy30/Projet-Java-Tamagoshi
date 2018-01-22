@@ -13,7 +13,7 @@ import javax.swing.KeyStroke;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 
-import com.sun.glass.events.KeyEvent;
+import java.awt.event.KeyEvent;
 
 import tamagoshi.jeu.TamaScoreFrame;
 import tamagoshi.language.LanguageAccessor;

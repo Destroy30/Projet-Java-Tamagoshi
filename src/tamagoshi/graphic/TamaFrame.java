@@ -7,6 +7,7 @@ import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.io.IOException;
 import java.util.Random;
+import java.util.ResourceBundle;
 
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
@@ -15,12 +16,14 @@ import javax.swing.JPanel;
 import javax.swing.JTextPane;
 
 import tamagoshi.jeu.TamaGameGraphic;
+import tamagoshi.language.LanguageAccessor;
+import tamagoshi.language.LanguageObserver;
 import tamagoshi.tamagoshis.GrosJoueur;
 import tamagoshi.tamagoshis.GrosMangeur;
 import tamagoshi.tamagoshis.Tamagoshi;
 
 
-public class TamaFrame extends JFrame{
+public class TamaFrame extends JFrame implements LanguageObserver{
 	
 	private TamaGameGraphic tamaGame;
 	private Tamagoshi tamaManaged;
@@ -50,10 +53,10 @@ public class TamaFrame extends JFrame{
 		
 		JPanel panelBoutons = new JPanel(new FlowLayout());
 		
-		this.feedButton = new JButton("Nourrir");
+		this.feedButton = new JButton();
 		feedButton.addActionListener((e->{goFeed();}));
 		
-		this.playButton = new JButton("Jouer");
+		this.playButton = new JButton();
 		playButton.addActionListener((e->{goPlay();}));
 		
 		panelBoutons.add(feedButton);
@@ -65,6 +68,9 @@ public class TamaFrame extends JFrame{
 		
 		this.add(BorderLayout.SOUTH, panelAction);
 		
+		//Language
+		LanguageAccessor accessor = LanguageAccessor.getInstance();
+		accessor.addObservator(this);
 	}
 	
 	public void displayText(String text) {
@@ -128,11 +134,13 @@ public class TamaFrame extends JFrame{
 	public void setKoImage() {
 		this.tamaPanel.changeImage("pikako");
 	}
+
+	@Override
+	public void languageUpdate(LanguageAccessor languageAcc) {
+		ResourceBundle language = languageAcc.getBundle("Game");
+		this.playButton.setText(language.getString("play"));
+		this.feedButton.setText(language.getString("feed"));
+	}
 	
-	//Test
-//	public static void main(String[] args) {
-//		
-//		TamaFrame tam = new TamaFrame(new TamaGameGraphic(),"hey");
-//	}
 
 }

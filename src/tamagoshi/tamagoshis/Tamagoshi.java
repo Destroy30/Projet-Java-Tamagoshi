@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 import tamagoshi.graphic.TamaFrame;
 import tamagoshi.graphic.TamaJPanel;
 import tamagoshi.language.LanguageAccessor;
+import tamagoshi.language.LanguageObserver;
 
 /**
  * Tamagoshi est une classe abstraite permettant de modéliser le comportement d'un Tamagoshi <br>
@@ -13,7 +14,7 @@ import tamagoshi.language.LanguageAccessor;
  * Cette classe est abstraite car un Tamagoshi est forcément soit un {@link GrosMangeur} ou un {@link GrosJoueur} <br>
  */
 
-public abstract class Tamagoshi {
+public abstract class Tamagoshi implements LanguageObserver {
 	
 	/**
 	 * Âge du Tamagoshi (celui-ci peut vieillir jusqu'à lifetime dans {@link tamagoshi.jeu.TamaGame}))
@@ -57,7 +58,7 @@ public abstract class Tamagoshi {
 	
 	private TamaFrame tamaFrame;
 	
-	private static ResourceBundle language = LanguageAccessor.getDefaultBundle("Tamagoshi");
+	private ResourceBundle language;
 	
 	
 	/**
@@ -75,6 +76,10 @@ public abstract class Tamagoshi {
 		setEnergy(this.alea.nextInt(5)+5);
 		this.maxFun=this.alea.nextInt(5)+7;
 		setFun(this.alea.nextInt(5)+5);
+		
+		//Language
+		LanguageAccessor accessor = LanguageAccessor.getInstance();
+		accessor.addObservator(this);
 	}
 	
 	/**
@@ -256,6 +261,10 @@ public abstract class Tamagoshi {
 
 	public void setTamaFrame(TamaFrame tamaFrame) {
 		this.tamaFrame = tamaFrame;
+	}
+	
+	public void languageUpdate(LanguageAccessor languageAcc) {
+		this.language = languageAcc.getBundle("Tamagoshi");
 	}
 	
 	

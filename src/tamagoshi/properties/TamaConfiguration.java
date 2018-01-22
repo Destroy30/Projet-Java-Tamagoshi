@@ -9,6 +9,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
 import java.util.Properties;
 
 public class TamaConfiguration {
@@ -17,7 +19,7 @@ public class TamaConfiguration {
 	private String location = "tamaGame.properties";
 	private static TamaConfiguration intsance;
 	
-	public static TamaConfiguration getInstance() {
+	public static synchronized TamaConfiguration getInstance() {
 		if(TamaConfiguration.intsance == null) {
 			TamaConfiguration.intsance = new TamaConfiguration();
 		}
@@ -126,6 +128,31 @@ public class TamaConfiguration {
 		lineScore = lineScore.replaceFirst(",", "");
 		setProperty("scoreNiv"+difficulty, lineScore);
 		return registered;
+	}
+	
+	public List<Locale> getManagedLanguages() {
+		List<Locale>listLocales = new ArrayList<Locale>();
+		String lineManagedLanguages = getProperty("managedLanguages");
+		if(lineManagedLanguages!=null) {
+			for(String langue : lineManagedLanguages.split(",")) {
+				Locale localToAdd = new Locale(langue);
+				listLocales.add(localToAdd);
+			}
+		}
+		return listLocales;
+	}
+	
+	public Locale getUserLanugage() {
+		Locale userLocale = null;
+		String userLanguage = getProperty("userLanguage");
+		if(userLanguage!=null) {
+			userLocale = new Locale(userLanguage);
+		}
+		return userLocale;
+	}
+	
+	public void setUserLanguage(Locale locale) {
+		this.setProperty("userLanguage", locale.getLanguage());
 	}
 	
 	private String getProperty(String key) {

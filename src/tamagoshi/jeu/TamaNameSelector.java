@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.ResourceBundle;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -13,7 +14,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class TamaNameSelector extends JFrame {
+import tamagoshi.language.LanguageAccessor;
+import tamagoshi.language.LanguageObserver;
+
+public class TamaNameSelector extends JFrame implements LanguageObserver{
 	
 	private TamaGameGraphic tamaGame;
 	private int limit;
@@ -22,6 +26,7 @@ public class TamaNameSelector extends JFrame {
 	private JLabel numberLabel;
 	private JTextField nameInput;
 	private JButton confirmButton;
+	private ResourceBundle language;
 	
 	public TamaNameSelector(TamaGameGraphic tamaGame,int tamaNumbers) {
 		this.tamaGame = tamaGame;
@@ -36,7 +41,6 @@ public class TamaNameSelector extends JFrame {
 		JPanel panelConfirm = new JPanel();
 		
 		this.numberLabel = new JLabel();
-		setLabelNumberText(1);
 		
 		this.nameInput = new JTextField();
 		this.nameInput.setColumns(20);
@@ -48,7 +52,7 @@ public class TamaNameSelector extends JFrame {
 			}
 		});
 		
-		this.confirmButton = new JButton("Confirmer");
+		this.confirmButton = new JButton();
 		this.confirmButton.addActionListener((e->{registerTamagoshi();}));
 		
 		
@@ -63,11 +67,16 @@ public class TamaNameSelector extends JFrame {
 
 		this.add(BorderLayout.CENTER,panelSelection);
 		
+		//Language
+		LanguageAccessor accessor = LanguageAccessor.getInstance();
+		accessor.addObservator(this);
+		
+		setLabelNumberText(1);
+		
 		init();
 	}
 	
 	public void init() {
-		this.setTitle("Selection des noms des tamagoshis");
 		this.setSize(new Dimension(300,175));
 		this.setResizable(false);
 		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -76,7 +85,7 @@ public class TamaNameSelector extends JFrame {
 	}
 	
 	private void setLabelNumberText(int number) {
-		this.numberLabel.setText("Nom du tamagoshi n°="+number);
+		this.numberLabel.setText(language.getString("numberOfTamagoshi")+number);
 	}
 	
 	private void registerTamagoshi() {
@@ -101,6 +110,13 @@ public class TamaNameSelector extends JFrame {
 	private void endNameSelection() {
 		this.tamaGame.registerByNames(this.nameArray);
 		this.dispose();
+	}
+
+	@Override
+	public void languageUpdate(LanguageAccessor languageAcc) {
+		this.language = languageAcc.getBundle("Home");
+		this.setTitle(language.getString("selectionWindow"));
+		this.confirmButton.setText(language.getString("confirm"));
 	}
 	
 }

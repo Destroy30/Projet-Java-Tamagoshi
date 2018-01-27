@@ -25,7 +25,7 @@ public class TamaJPanel extends JPanel {
 	
 	private void setTamaImage(String ressourceName) {
 		try {
-			this.tamaImage = ImageIO.read(TamaJPanel.class.getResource("./ressources/"+ressourceName+".png"));
+			this.tamaImage = ImageIO.read(TamaJPanel.class.getResource("/tamagoshi/graphic/ressources/"+ressourceName+".png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

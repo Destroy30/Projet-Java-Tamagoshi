@@ -34,8 +34,10 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import tamagoshi.audio.AudioPlayer;
 import tamagoshi.graphic.TamaJPanel;
 import tamagoshi.jeu.actions.ActionExit;
+import tamagoshi.jeu.actions.ActionHelp;
 import tamagoshi.jeu.actions.ActionPlay;
 import tamagoshi.jeu.actions.ActionScore;
 import tamagoshi.language.LanguageAccessor;
@@ -142,12 +144,21 @@ public class TamaHomeGraphic extends JFrame implements LanguageObserver{
 		menuInformations = new JMenu();
 		menuInformations.setMnemonic(KeyEvent.VK_I);
 		
-		itemGameInfos = new JMenuItem();
-		itemGameInfos.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T,InputEvent.CTRL_MASK));
+		itemGameInfos = new JMenuItem(new ActionHelp());
 		
 		itemScore = new JMenuItem(actionScore);
+		
 		itemAboutTeam = new JMenuItem();
 		itemAboutTeam.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I,InputEvent.CTRL_MASK));
+		itemAboutTeam.setMnemonic(KeyEvent.VK_I);
+		itemAboutTeam.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				TamaAbout aboutFrame = new TamaAbout();
+				aboutFrame.setLocationRelativeTo(null);
+				aboutFrame.setSize(500,130);
+				aboutFrame.setVisible(true);
+			}});
 		
 		menuInformations.add(itemGameInfos);
 		menuInformations.add(itemScore);
@@ -225,6 +236,11 @@ public class TamaHomeGraphic extends JFrame implements LanguageObserver{
 		LanguageAccessor accessor = LanguageAccessor.getInstance();
 		accessor.addObservator(this);
 		
+		
+		//Audio
+		AudioPlayer audio = AudioPlayer.getInstance();
+		audio.playBackgroundMusic("fileCityDay");
+		
 	}
 
 
@@ -282,7 +298,6 @@ public class TamaHomeGraphic extends JFrame implements LanguageObserver{
 		this.difficultyFixedRadio.setText(language.getString("fixedDifficulty"));
 		this.difficultyFree.setText(language.getString("notFixedDifficulty"));
 		this.menuInformations.setText(language.getString("infos"));
-		this.itemGameInfos.setText(language.getString("rules"));
 		this.itemAboutTeam.setText(language.getString("about"));
 		this.setTitle(language.getString("tamaGame"));
 		this.labelDifficulty.setText(language.getString("setUpDifficulty"));

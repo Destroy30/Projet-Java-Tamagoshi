@@ -18,6 +18,7 @@ public class ActionExit extends AbstractAction implements LanguageObserver  {
 	public ActionExit() {
 		super();
 		this.putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_MASK));
+		this.putValue(MNEMONIC_KEY, KeyEvent.VK_Q);
 		LanguageAccessor languageAcc = LanguageAccessor.getInstance();
 		languageAcc.addObservator(this);
 	}

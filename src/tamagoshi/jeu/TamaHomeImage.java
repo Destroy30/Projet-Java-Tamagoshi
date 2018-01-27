@@ -20,7 +20,7 @@ public class TamaHomeImage extends JPanel {
 		super.paintComponent(g);
 		try {
 			BufferedImage tamaImage;
-			tamaImage = ImageIO.read(this.getClass().getResource("../graphic/ressources/tamaHomeImage.png"));
+			tamaImage = ImageIO.read(this.getClass().getResource("/tamagoshi/graphic/ressources/tamaHomeImage.png"));
 			g.drawImage(tamaImage, 70, 0, 250,250,this);
 		} catch (IOException e) {
 			e.printStackTrace();

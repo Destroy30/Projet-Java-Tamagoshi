@@ -26,6 +26,7 @@ public class ActionPlay extends AbstractAction implements LanguageObserver {
 		super();
 		this.home=home;
 		this.putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_P, InputEvent.CTRL_MASK));
+		this.putValue(MNEMONIC_KEY, KeyEvent.VK_P);
 		LanguageAccessor languageAcc = LanguageAccessor.getInstance();
 		languageAcc.addObservator(this);
 	}

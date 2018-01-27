@@ -27,6 +27,7 @@ public class ActionScore extends AbstractAction implements LanguageObserver {
 	public ActionScore() {
 		super();
 		this.putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.CTRL_MASK));
+		this.putValue(MNEMONIC_KEY, KeyEvent.VK_R);
 		LanguageAccessor languageAcc = LanguageAccessor.getInstance();
 		languageAcc.addObservator(this);
 	}

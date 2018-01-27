@@ -3,6 +3,7 @@ package tamagoshi.tamagoshis;
 import java.util.Random;
 import java.util.ResourceBundle;
 
+import tamagoshi.audio.AudioPlayer;
 import tamagoshi.graphic.TamaFrame;
 import tamagoshi.graphic.TamaJPanel;
 import tamagoshi.language.LanguageAccessor;
@@ -59,6 +60,8 @@ public abstract class Tamagoshi implements LanguageObserver {
 	private TamaFrame tamaFrame;
 	
 	private ResourceBundle language;
+
+	private AudioPlayer audio;
 	
 	
 	/**
@@ -80,6 +83,9 @@ public abstract class Tamagoshi implements LanguageObserver {
 		//Language
 		LanguageAccessor accessor = LanguageAccessor.getInstance();
 		accessor.addObservator(this);
+		
+		//Audio
+		this.audio = AudioPlayer.getInstance();
 	}
 	
 	/**
@@ -148,10 +154,12 @@ public abstract class Tamagoshi implements LanguageObserver {
 	public boolean mange() {
 		if(this.energy<this.maxEnergy) {
 			this.tamaFrame.displayText(language.getString("eating"));
+			this.audio.playSound("pikaHappy");
 			setEnergy(this.energy+this.alea.nextInt(3)+1);
 			return true;
 		}
 		this.tamaFrame.displayText(language.getString("dontWantEat"));
+		this.audio.playSound("pikaNotHappy");
 		return false;
 	}
 	
@@ -164,10 +172,12 @@ public abstract class Tamagoshi implements LanguageObserver {
 	public boolean joue() {
 		if(this.fun<this.maxFun) {
 			this.tamaFrame.displayText(language.getString("yeah"));
+			this.audio.playSound("pikaHappy");
 			setFun(this.fun+this.alea.nextInt(3)+1);
 			return true;
 		}
 		this.tamaFrame.displayText(language.getString("dontWantPlay"));
+		this.audio.playSound("pikaNotHappy");
 		return false;
 	}
 	
@@ -181,6 +191,7 @@ public abstract class Tamagoshi implements LanguageObserver {
 		if(this.energy<=0) {
 			this.tamaFrame.displayText(language.getString("koHungry"));
 			this.tamaFrame.setKoImage();
+			this.audio.playSound("pikaNotHappy");
 			return false;
 		}
 		return true;
@@ -196,6 +207,7 @@ public abstract class Tamagoshi implements LanguageObserver {
 		if(this.fun<=0) {
 			this.tamaFrame.displayText(language.getString("koBored"));
 			this.tamaFrame.setKoImage();
+			this.audio.playSound("pikaNotHappy");
 			return false;
 		}
 		return true;

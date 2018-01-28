@@ -17,7 +17,7 @@ import tamagoshi.language.LanguageObserver;
 public abstract class Tamagoshi implements LanguageObserver {
 	
 	/**
-	 * Âge du Tamagoshi (celui-ci peut vieillir jusqu'à lifetime dans {@link tamagoshi.jeu.TamaGame}))
+	 * Âge du Tamagoshi (celui-ci peut vieillir jusqu'à lifetime)
 	 */
 	private int age;
 	

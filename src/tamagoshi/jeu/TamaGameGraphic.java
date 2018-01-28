@@ -249,9 +249,9 @@ public class TamaGameGraphic extends JFrame implements LanguageObserver {
 	
 	
 	/**
-	 * Cette méthode initialise enregsitre un tamagoshis dans {@link TamaGamGraphice#tamsStart}} et {@link TamaGamGraphice#tamsActual}} <br>
+	 * Cette méthode initialise enregsitre un tamagoshis dans {@link TamaGameGraphic#tamsStart}} et {@link TamaGameGraphic#tamsActual}} <br>
 	 * Le {@link Tamagoshi} à 50% de chances d'être un {@link GrosMangeur} et donc 50% de chances d'être un {@link GrosJoueur} <br>
-	 * Une tamaFrame est également crée et ajoutée à la liste {@link TamaGamGraphice#framesTamagoshis} <br>
+	 * Une tamaFrame est également crée et ajoutée à la liste {@link TamaGameGraphic#framesTamagoshis} <br>
 	 * @param tamName Nom du tamagoshi à enregistrer, il sert dans le constructeur de {@link Tamagoshi}
 	 */
 	
@@ -266,7 +266,7 @@ public class TamaGameGraphic extends JFrame implements LanguageObserver {
 	}
 
 	/**
-	 * Pour tout les tamagoshis contenus dans {@link TamaGamGraphice#tamsActual} déclenche la méthode {@link Tamagoshi#parle()} <br>
+	 * Pour tout les tamagoshis contenus dans {@link TamaGameGraphic#tamsActual} déclenche la méthode {@link Tamagoshi#parle()} <br>
 	 * Cela a pour effet d'afficher un par un l'état des tamagoshis toujours vivants
 	 */
 	
@@ -280,7 +280,7 @@ public class TamaGameGraphic extends JFrame implements LanguageObserver {
 	 * Cette méthode permet de réaliser les action de fin de tour pour chaque tamagoshis <br>
 	 * Elle appelle notament les méthodes {@link Tamagoshi#incrementerAge()} et {@link Tamagoshi#consomme()} <br>
 	 * Les tamgoshis encore vivants vieilissent et consomme de l'enrgy et du fun. <br>
-	 * Si la methode consomme renvoie "false" alors le tamagoshi est considéré comme mort et retiré de {@link TamaGame#tamsActual}
+	 * Si la methode consomme renvoie "false" alors le tamagoshi est considéré comme mort et retiré de {@link TamaGameGraphic#tamsActual}
 	 */
 	
 	private void endTour() {
@@ -309,7 +309,7 @@ public class TamaGameGraphic extends JFrame implements LanguageObserver {
 
 	/**
 	 * Cette méthode va permettre de calculer la somme des ages des tamaghis dans {@link TamaGameGraphic#tamsStart}, utile pour le score <br>
-	 * Chaque Tamagoshi affiche son état final (état ou mort) avec {@link Tamagoshi#finalState()} <br>
+	 * Chaque Tamagoshi affiche son état final (état ou mort) avec {@link TamaGameGraphic#displayFinalStateOfTamaGochi(Tamagoshi)} <br>
 	 * @return Le score final en pourcentage, en faisant appel à {@link TamaGameGraphic#finalScoreFromSommeAge(int)} 
 	 */
 	
@@ -324,7 +324,7 @@ public class TamaGameGraphic extends JFrame implements LanguageObserver {
 	
 	/**
 	 * Permet d'afficher dans la console graphique l'état final du tamagoshi (mort ou vivant) à la fin de la partie <br>
-	 * @param tam
+	 * @param tam Tamagoshi dont on veut montrer l'état final
 	 */
 	private void displayFinalStateOfTamaGochi(Tamagoshi tam) {
 		if(tam.isDead()) {

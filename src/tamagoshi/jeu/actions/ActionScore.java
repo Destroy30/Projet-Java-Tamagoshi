@@ -18,10 +18,16 @@ import java.awt.event.KeyEvent;
 import tamagoshi.jeu.TamaScoreFrame;
 import tamagoshi.language.LanguageAccessor;
 import tamagoshi.language.LanguageObserver;
-import tamagoshi.properties.TamaConfiguration;
+
+/**
+ * Cette classe va gérer l'action "Score" appellée afin d'afficher les scores d'un niveau de difficulté
+ */
 
 public class ActionScore extends AbstractAction implements LanguageObserver {
 	
+	/**
+	 * Bundle de langue
+	 */
 	private ResourceBundle language;
 	
 	public ActionScore() {
@@ -33,6 +39,11 @@ public class ActionScore extends AbstractAction implements LanguageObserver {
 	}
 
 	@Override
+	/**
+	 * Va afficher un {@link JOptionPane} afin de sélectionner un niveau de difficulté <br>
+	 * Un spinner va permettre de limiter la saisie <br>
+	 * Lorsque la difficulté est choisie, va afficher la {@link TamaScoreFrame} correspondante
+	 */
 	public void actionPerformed(ActionEvent arg0) {
 		SpinnerModel model = new SpinnerNumberModel(1,1,10,1);
 		JSpinner spin = new JSpinner(model);
@@ -41,9 +52,7 @@ public class ActionScore extends AbstractAction implements LanguageObserver {
 		int result = JOptionPane.showOptionDialog(null, spin, language.getString("enterDifficulty"), JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
 		if(result == JOptionPane.OK_OPTION) {
 			int level=(int) spin.getValue();
-			TamaConfiguration config = TamaConfiguration.getInstance();
-			double[]scores =  config.getScores(level);
-			TamaScoreFrame frameScore = new TamaScoreFrame(level,scores);
+			TamaScoreFrame frameScore = new TamaScoreFrame(level);
 			frameScore.setLocationRelativeTo(null);
 			frameScore.setResizable(false);
 			frameScore.setSize(250,100);
@@ -52,6 +61,9 @@ public class ActionScore extends AbstractAction implements LanguageObserver {
 	}
 	
 	@Override
+	/**
+	 * Permet de mettre à jour le nom de l'action au changement de langue
+	 */
 	public void languageUpdate(LanguageAccessor languageAcc) {
 		this.language = languageAcc.getBundle("Home");
 		this.putValue(Action.NAME, language.getString("score"));

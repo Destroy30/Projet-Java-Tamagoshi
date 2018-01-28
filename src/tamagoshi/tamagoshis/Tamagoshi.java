@@ -5,7 +5,6 @@ import java.util.ResourceBundle;
 
 import tamagoshi.audio.AudioPlayer;
 import tamagoshi.graphic.TamaFrame;
-import tamagoshi.graphic.TamaJPanel;
 import tamagoshi.language.LanguageAccessor;
 import tamagoshi.language.LanguageObserver;
 
@@ -48,7 +47,7 @@ public abstract class Tamagoshi implements LanguageObserver {
 	private String name;
 	
 	/**
-	 * Durée de vie des tamagoshis, utile pour arrêter les cycles dans {@link tamagoshi.jeu.TamaGame})
+	 * Durée de vie des tamagoshis
 	 */
 	private static int lifeTime=10;
 	
@@ -57,17 +56,26 @@ public abstract class Tamagoshi implements LanguageObserver {
 	 */
 	private Random alea=new Random();
 	
+	/**
+	 * Frame d'affichage du tamagoshi, les différents messages émits par le Tamagoshi sont envoyés à cette frame
+	 */
 	private TamaFrame tamaFrame;
 	
+	/**
+	 * Bundle de langue, permet d'obtenir les message à afficher dans la bonne langue
+	 */
 	private ResourceBundle language;
 
+	/**
+	 * Player pour jouer les sons du Tamagoshi
+	 */
 	private AudioPlayer audio;
 	
 	
 	/**
 	 * Cree un objet Tamagoshi <br>
-	 * L'energie maximum varie entre 9 et 11 <br>
-	 * L'energie entre 5 et 9 <br>
+	 * L'energie maximum varie entre 11 et 15 <br>
+	 * L'energie entre 11 et  15<br>
 	 * La variable "fun" d'amusement suit les mêmes probabilités
 	 * @param name Nom du Tamagoshi
 	 */
@@ -75,10 +83,10 @@ public abstract class Tamagoshi implements LanguageObserver {
 	public Tamagoshi(String name) {
 		this.name=name;
 		this.age=0;
-		this.maxEnergy=this.alea.nextInt(5)+7;
-		setEnergy(this.alea.nextInt(5)+5);
-		this.maxFun=this.alea.nextInt(5)+7;
-		setFun(this.alea.nextInt(5)+5);
+		this.maxEnergy=this.alea.nextInt(5)+11;
+		setEnergy(this.alea.nextInt(5)+11);
+		this.maxFun=this.alea.nextInt(5)+11;
+		setFun(this.alea.nextInt(5)+11);
 		
 		//Language
 		LanguageAccessor accessor = LanguageAccessor.getInstance();
@@ -119,9 +127,10 @@ public abstract class Tamagoshi implements LanguageObserver {
 	/**
 	 * Le tamagoshi affiche son état : <br>
 	 * - Tout vas bien si son energy et son fun sont supérieurs à 5 <br>
-	 * - Je suis affamé si et seulement si son energie est inférieure à 5 <br>
-	 * - Je m'ennui à mourrir si et seulement si son fun est inférieur à 5 <br>
-	 * - Je suis affamé et je m'ennui à mourrir si son enregy et son fun sont inférieur à 5
+	 * - Affamé si et seulement si son energie est inférieure à 5 <br>
+	 * - S'ennui à mourrir si et seulement si son fun est inférieur à 5 <br>
+	 * - Affamé et s'ennui à mourrir si son enregy et son fun sont inférieur à 5 <br>
+	 * Le tamagoshi demande ensuite à sa frame de se mettre à jour selon l'état en affichant une image
 	 * @return Un booléen "true" si tout vas bien ou "false" si quelque chose ne va pas
 	 */
 	public boolean parle() {
@@ -148,7 +157,8 @@ public abstract class Tamagoshi implements LanguageObserver {
 	/**
 	 * Le tamagoshi essaye de manger : <br>
 	 * - Si son energy est au maximum, il ne mange pas et affichera "Pas miam" <br>
-	 * - Si son energy n'est pas au maximum, il mange et son energy augmente par une valeur aléatoire comprise entre 1 et 3
+	 * - Si son energy n'est pas au maximum, il mange et son energy augmente par une valeur aléatoire comprise entre 1 et 3 <br>
+	 * Un son est joué selon le resultat
 	 * @return Un booléen "true" si le tamagoshi a mangé ou "false" si il n'a pas mangé 
 	 */
 	public boolean mange() {
@@ -167,6 +177,7 @@ public abstract class Tamagoshi implements LanguageObserver {
 	 * Le tamagoshi essaye de jouer : <br>
 	 * - Si son fun est au maximum, il ne joue pas et affichera "Dégage, je suis deja au max de MON FUN!" <br>
 	 * - Si son fun n'est pas au maximum, il joue et son fun augmente par une valeur aléatoire comprise entre 1 et 3
+	 * Un son est joué selon le resultat
 	 * @return Un booléen "true" si le tamagoshi a joué ou "false" si il n'a pas joué
 	 */
 	public boolean joue() {
@@ -183,15 +194,13 @@ public abstract class Tamagoshi implements LanguageObserver {
 	
 	/**
 	 * Le tamagoshi conomme un point d'énergie : <br>
-	 * - Si jamais son energie passe à 0 (ou inférieur) il est considéré comme mort et affiche "Je suis KO le ventre vide..."
+	 * - Si jamais son energie passe à 0 (ou inférieur) il est considéré comme mort et affiche une phrase de décès
 	 * @return Un booléen "true" si le tamagoshi survit ou "false" si il ne survit pas
 	 */
 	protected boolean consommeEnergie() {
 		this.energy--;
 		if(this.energy<=0) {
 			this.tamaFrame.displayText(language.getString("koHungry"));
-			this.tamaFrame.setKoImage();
-			this.audio.playSound("pikaNotHappy");
 			return false;
 		}
 		return true;
@@ -199,28 +208,32 @@ public abstract class Tamagoshi implements LanguageObserver {
 	
 	/**
 	 * Le tamagoshi conomme un point de fun  : <br>
-	 * - Si jamais son fun passe à 0 (ou inférieur) il est considéré comme mort et affiche "JE SUIS PAS VENU ICI POUR SOUFFRIR OKAY ? BYE"
+	 * - Si jamais son fun passe à 0 (ou inférieur) il est considéré comme mort et affiche une phrase de décès
 	 * @return Un booléen "true" si le tamagoshi survit ou "false" si il ne survit pas
 	 */
 	protected boolean consommeFun() {
 		this.fun--;
 		if(this.fun<=0) {
 			this.tamaFrame.displayText(language.getString("koBored"));
-			this.tamaFrame.setKoImage();
-			this.audio.playSound("pikaNotHappy");
 			return false;
 		}
 		return true;
 	}
 	
 	/**
-	 * Le tamagoshi conomme un point de fun et un point d'energy : <br>
+	 * Le tamagoshi consomme un point de fun et un point d'energy : <br>
 	 * - Fait appel aux méthodes {@link Tamagoshi#consommeEnergie()} et  {@link Tamagoshi#consommeFun()} <br>
-	 * - Si jamais une des variables (fun ou energy) descend à 0 ou moins, le tamagoshi meurt et affiche un message
+	 * - Si jamais une des variables (fun ou energy) descend à 0 ou moins, le tamagoshi meurt et affiche un message <br>
+	 * - Si le tamagoshi meurt, il jouera également un son correspondant et mettra à jour son image dans sa frame
 	 * @return Un booléen "true" si le tamagoshi survit ou "false" si il ne survit pas
 	 */
 	public boolean consomme() {
-		return (this.consommeEnergie() && this.consommeFun());
+		boolean isAlive = (this.consommeEnergie() && this.consommeFun());
+		if(!isAlive) {
+			this.tamaFrame.setKoImage();
+			this.audio.playSound("pikaNotHappy");
+		}
+		return isAlive;
 	}
 	
 	/*public String toString() {
@@ -235,13 +248,8 @@ public abstract class Tamagoshi implements LanguageObserver {
 		return this.name;
 	}
 	
-	/*public String getName() {
-		return this.name;
-	}*/
-	
-	
 	/**
-	 * Méthode de classe permettant de récupérer la durée de vie des tamagoshis (correspondant à la limite des cycles dans {@link tamagoshi.jeu.TamaGame})
+	 * Méthode de classe permettant de récupérer la durée de vie des tamagoshis) <br>
 	 * @return La variable de classe lifetime (durée de vie)
 	 */
 	public static int getLifeTime() {
@@ -249,14 +257,14 @@ public abstract class Tamagoshi implements LanguageObserver {
 	}
 	
 	/**
-	 * Permet d'augmenter l'age du tamagoshi de 1, connaitre l'age est utile pour le calcul du score dans {@link tamagoshi.jeu.TamaGame}
+	 * Permet d'augmenter l'age du tamagoshi de 1, connaitre l'age est utile pour le calcul du score dans la partie
 	 */
 	public void incrementerAge() {
 		this.age++;
 	}
 	
 	/**
-	 * Permet de vérifier si un tamagoshi est mort ou vivant (en se basant sur son energy et son fun)
+	 * Permet de vérifier si un tamagoshi est mort ou vivant (en se basant sur son energy et son fun) <br>
 	 * @return Un booléen "true" si le tamagoshi est mort, "false" si il est vivant
 	 */
 	public boolean isDead() {
@@ -264,17 +272,25 @@ public abstract class Tamagoshi implements LanguageObserver {
 	}
 	
 	/**
-	 * Permet de récupérer l'âge d'un tamagoshi, connaitre l'age est utile pour le calcul du score dans {@link tamagoshi.jeu.TamaGame}
+	 * Permet de récupérer l'âge d'un tamagoshi, connaitre l'age est utile pour le calcul du score <br>
 	 * @return Un int correspondant à l'âge du Tamagoshi
 	 */
 	public int getAge() {
 		return this.age;
 	}
 
+	/**
+	 * Permet de lier une frame au tamagoshi <br>
+	 * @param tamaFrame Frame qui va interagir avec le tamagoshi
+	 */
 	public void setTamaFrame(TamaFrame tamaFrame) {
 		this.tamaFrame = tamaFrame;
 	}
 	
+	/**
+	 * Methode implémenté de {@link LanguageObserver} <br>
+	 * Permet de mettre à jour le fichier de ressources de langue des tamagoshis
+	 */
 	public void languageUpdate(LanguageAccessor languageAcc) {
 		this.language = languageAcc.getBundle("Tamagoshi");
 	}

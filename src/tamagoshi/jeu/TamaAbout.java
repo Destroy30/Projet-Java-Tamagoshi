@@ -10,8 +10,14 @@ import javax.swing.JTextPane;
 import tamagoshi.language.LanguageAccessor;
 import tamagoshi.language.LanguageObserver;
 
+/**
+ * Fenetre présentant les informations à propos du créateur du jeu
+ */
 public class TamaAbout extends JFrame implements LanguageObserver {
 	
+	/**
+	 * Contient les informations sur le créateur
+	 */
 	private JTextPane content;
 
 	public TamaAbout() {
@@ -26,6 +32,9 @@ public class TamaAbout extends JFrame implements LanguageObserver {
 	}
 
 	@Override
+	/**
+	 * Permet de mettre à jour le texte par rapport à la langue choisie
+	 */
 	public void languageUpdate(LanguageAccessor languageAcc) {
 		ResourceBundle bundle = languageAcc.getBundle("Home");
 		this.setTitle(bundle.getString("about"));

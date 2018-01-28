@@ -7,15 +7,15 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-import tamagoshi.graphic.TamaJPanel;
-
+/**
+ * Composant présentant une image de tamagoshi
+ */
 public class TamaHomeImage extends JPanel {
 	
-	public TamaHomeImage() {
-
-	}
-	
 	@Override
+	/**
+	 * Paint le composant en affichant l'image d'un tamagoshi
+	 */
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		try {

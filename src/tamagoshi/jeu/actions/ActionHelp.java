@@ -12,7 +12,10 @@ import javax.swing.KeyStroke;
 import tamagoshi.jeu.TamaHelp;
 import tamagoshi.language.LanguageAccessor;
 import tamagoshi.language.LanguageObserver;
-import tamagoshi.properties.TamaConfiguration;
+
+/**
+ * Cette classe va permettre d'ouvrir la fenêtre des règles du jeu
+ */
 
 public class ActionHelp extends AbstractAction implements LanguageObserver  {
 	
@@ -25,6 +28,9 @@ public class ActionHelp extends AbstractAction implements LanguageObserver  {
 	}
 
 	@Override
+	/**
+	 * Va ouvrir la fenêtre {@link TamaHelp}
+	 */
 	public void actionPerformed(ActionEvent arg0) {
 		TamaHelp tamaHelp = new TamaHelp();
 		tamaHelp.setLocationRelativeTo(null);
@@ -33,6 +39,9 @@ public class ActionHelp extends AbstractAction implements LanguageObserver  {
 	}
 
 	@Override
+	/**
+	 * Permet de mettre à jour le nom de l'action au changement de langue
+	 */
 	public void languageUpdate(LanguageAccessor languageAcc) {
 		ResourceBundle languageBundle = languageAcc.getBundle("Home");
 		this.putValue(Action.NAME, languageBundle.getString("rules"));

@@ -10,8 +10,14 @@ import javax.swing.JTextPane;
 import tamagoshi.language.LanguageAccessor;
 import tamagoshi.language.LanguageObserver;
 
+/**
+ * Fenetre présentant les règles du jeu
+ */
 public class TamaHelp extends JFrame implements LanguageObserver {
 	
+	/**
+	 * Contient les règles du jeu
+	 */
 	private JTextPane content;
 
 	public TamaHelp() {
@@ -26,6 +32,9 @@ public class TamaHelp extends JFrame implements LanguageObserver {
 	}
 
 	@Override
+	/**
+	 * Permet de mettre à jour le texte par rapport à la langue choisie
+	 */
 	public void languageUpdate(LanguageAccessor languageAcc) {
 		ResourceBundle bundle = languageAcc.getBundle("Home");
 		this.setTitle(bundle.getString("rules"));

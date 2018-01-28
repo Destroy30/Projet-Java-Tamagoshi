@@ -14,9 +14,22 @@ import tamagoshi.language.LanguageAccessor;
 import tamagoshi.language.LanguageObserver;
 import tamagoshi.properties.TamaConfiguration;
 
+/**
+ * Cette classe définit un menu qui va contenir une liste de langues <br>
+ * Il va permettre au programme de changer de langue <br>
+ * Ce menu va pouvoir être ré-utilisable par plusieurs interfaces
+ */
 public class TamagoshiLanguageMenu extends JMenu implements LanguageObserver {
 	
+	/**
+	 * Configuration de l'application
+	 */
 	private TamaConfiguration config;
+	
+	/**
+	 * Objet de language fournissant les bundles pour la langue courante <br>
+	 * La mise à  jour de la langue fera appel à cet objet qui répandra la mise à jour sur toute l'application
+	 */
 	private LanguageAccessor languageAccessor;
 
 	public TamagoshiLanguageMenu() {
@@ -26,7 +39,12 @@ public class TamagoshiLanguageMenu extends JMenu implements LanguageObserver {
 		this.languageAccessor.addObservator(this);
 	}
 	
-	public void setUpRadioItems() {
+	/**
+	 * Cette méthode crée et place une option pour chaque langue dans le menu en mode "radio" <br>
+	 * Elle va récupérer les langues que l'application gère dans le fichier de configuration <br>
+	 * L'affichage du nom des langues est gérée par les Locale en fonction de la langue slectionnée
+	 */
+	private void setUpRadioItems() {
 		this.removeAll();
 		Locale currentGameLocale = this.languageAccessor.getGameLocale();
 		List<Locale> localesList = this.config.getManagedLanguages();
@@ -46,6 +64,10 @@ public class TamagoshiLanguageMenu extends JMenu implements LanguageObserver {
 	}
 
 	@Override
+	/**
+	 * Méthode implémenté de l'interface {@link LanguageObserver} <br>
+	 * Permet de mettre à jour le nom des langues dans le menu
+	 */
 	public void languageUpdate(LanguageAccessor languageAcc) {
 		ResourceBundle language = languageAcc.getBundle("Home");
 		this.setText(language.getString("language"));

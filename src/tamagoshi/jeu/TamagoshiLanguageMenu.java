@@ -12,7 +12,6 @@ import javax.swing.JRadioButtonMenuItem;
 
 import tamagoshi.language.LanguageAccessor;
 import tamagoshi.language.LanguageObserver;
-import tamagoshi.properties.TamaConfiguration;
 
 /**
  * Cette classe définit un menu qui va contenir une liste de langues <br>
@@ -22,9 +21,9 @@ import tamagoshi.properties.TamaConfiguration;
 public class TamagoshiLanguageMenu extends JMenu implements LanguageObserver {
 	
 	/**
-	 * Configuration de l'application
+	 * Gestionnaire de langue de l'application
 	 */
-	private TamaConfiguration config;
+	private LanguageAccessor languageConfig;
 	
 	/**
 	 * Objet de language fournissant les bundles pour la langue courante <br>
@@ -34,7 +33,7 @@ public class TamagoshiLanguageMenu extends JMenu implements LanguageObserver {
 
 	public TamagoshiLanguageMenu() {
 		super();
-		this.config = TamaConfiguration.getInstance();
+		this.languageConfig = LanguageAccessor.getInstance();
 		this.languageAccessor = LanguageAccessor.getInstance();
 		this.languageAccessor.addObservator(this);
 	}
@@ -47,7 +46,7 @@ public class TamagoshiLanguageMenu extends JMenu implements LanguageObserver {
 	private void setUpRadioItems() {
 		this.removeAll();
 		Locale currentGameLocale = this.languageAccessor.getGameLocale();
-		List<Locale> localesList = this.config.getManagedLanguages();
+		List<Locale> localesList = this.languageAccessor.getManagedLanguages();
 		ButtonGroup groupLanguages = new ButtonGroup();
 		for(Locale locale : localesList) {
 			JRadioButtonMenuItem itemLanguage = new JRadioButtonMenuItem(locale.getDisplayLanguage(currentGameLocale));

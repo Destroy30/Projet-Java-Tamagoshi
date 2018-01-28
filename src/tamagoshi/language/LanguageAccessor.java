@@ -1,8 +1,11 @@
 package tamagoshi.language;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 import tamagoshi.properties.TamaConfiguration;
@@ -34,12 +37,18 @@ public class LanguageAccessor {
 	private TamaConfiguration config;
 	
 	/**
+	 * Langues prise en comptes par l'application
+	 */
+	private List<Locale> managedLanguages;
+	
+	/**
 	 * Initiale principalement {@link LanguageAccessor#gameLocal} <br>
 	 * Si l'utilisateur à choisis une langue de préférence, elle est iniitialisé avec celle-ci, sinon avec la Locale par défaut
 	 */
 	private LanguageAccessor() {
 		this.languageObs = new ArrayList<LanguageObserver>();
 		this.config = TamaConfiguration.getInstance();
+		setUpManagedLanguages();
 		Locale userLanguage;
 		if((userLanguage = config.getUserLanugage())!=null) {
 			this.gameLocal = userLanguage;
@@ -58,6 +67,35 @@ public class LanguageAccessor {
 			LanguageAccessor.instance = new LanguageAccessor();
 		}
 		return LanguageAccessor.instance;
+	}
+	
+	/**
+	 * Va lire dans le fichier Language les langues gérées par l'application <br>
+	 * Cela va permettre notament de mettre en place le menu de selection de langue plus tard
+	 */
+	private void setUpManagedLanguages() {
+		try {
+			managedLanguages = new ArrayList<Locale>();
+			InputStream languageFile = this.getClass().getResourceAsStream("Language.properties");
+			Properties languageProperties = new Properties();
+			languageProperties.load(languageFile);
+			
+			String lineManagedLanguages = languageProperties.getProperty("managedLanguages");
+			for(String langue : lineManagedLanguages.split(",")) {
+					Locale localToAdd = new Locale(langue);
+					managedLanguages.add(localToAdd);
+			}
+		} catch (IOException e) {
+			System.err.println("Erreur lors de la lecture du fichier des langues gérées");
+		}
+	}
+	
+	/**
+	 * Permet d'obtenir tous les languges gérés par l'application
+	 * @return Une liste de Locale correspondants aux langages gérés par l'application
+	 */
+	public List<Locale> getManagedLanguages() {
+		return this.managedLanguages;
 	}
 	
 	/**

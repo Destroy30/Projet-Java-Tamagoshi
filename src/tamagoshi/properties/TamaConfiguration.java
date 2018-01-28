@@ -7,8 +7,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
 
@@ -197,24 +195,6 @@ public class TamaConfiguration {
 		lineScore = lineScore.replaceFirst(",", "");
 		setProperty("scoreNiv"+difficulty, lineScore);
 		return registered;
-	}
-	
-	/**
-	 * Permet d'obtenir tous les languges gérés par l'application
-	 * @return Une liste de Locale correspondants aux langages gérés par l'application
-	 */
-	public List<Locale> getManagedLanguages() {
-		List<Locale>listLocales = new ArrayList<Locale>();
-		String lineManagedLanguages = getProperty("managedLanguages");
-		if(lineManagedLanguages==null) { //Premier lancement ou effacement de ligne
-			lineManagedLanguages="fr,en";
-			this.setProperty("managedLanguages", lineManagedLanguages);
-		}
-		for(String langue : lineManagedLanguages.split(",")) {
-				Locale localToAdd = new Locale(langue);
-				listLocales.add(localToAdd);
-		}
-		return listLocales;
 	}
 	
 	/**
